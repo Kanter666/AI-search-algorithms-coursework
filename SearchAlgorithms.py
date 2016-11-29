@@ -4,6 +4,7 @@ import copy
 import queue
 import random
 from random import randint
+import os                   #library for cleaning screen
 
 class MyPriorityQueue(PriorityQueue):
     def __init__(self):
@@ -31,7 +32,6 @@ class World:
         self.final = []
         for i in range(self.boxes):
             self.final.append([height-1-i,1,self.boxes-i])
-            print(self.final)
         self.space[position[0]][position[1]]='A'
         self.position = position
         self.height = height
@@ -173,33 +173,58 @@ class World:
 def textMenu():
     def validInput(characters):
         while True:
-            string = input('Write your choice :')
+            string = input('Write your choice :/n')
             if (string in characters):
                 return string
             else:
                 print('You wrote "',string,'", that is not valid choice, choose from: ',characters)
     def chooseWorld():
         print('Choose difficulty(world) from: ')
-
         print('                                 1 - first difficulty')
         world = World(2,3,[[0,0]],[0, 1])
         world.print()
-        print('                                 2 - first difficulty')
+        print('                                 2 - second difficulty')
         world = World(3, 3, [[0, 0], [2, 0]], [0, 2])
         world.print()
-        print('                                 3 - first difficulty')
+        print('                                 3 - third difficulty')
+        world = World(3, 3, [[0, 2], [2, 0]], [1, 2])
+        world.print()
+        print('                                4 - fourth difficulty')
         world = World(4, 4, [[3, 0], [3, 1], [3, 2]], [3, 3])
         world.print()
         print('')
-        print('')
+        choice=validInput(['1','2','3','4'])
+        if (choice == "1"):
+            return World(2, 3, [[0, 0]], [0, 1])
+        elif (choice == "2"):
+            return World(3, 3, [[0, 0], [2, 0]], [0, 2])
+        elif (choice == "3"):
+            return World(3, 3, [[0, 0], [0, 2]], [2, 2])
+        elif (choice == "4"):
+            return World(4, 4, [[3, 0], [3, 1], [3, 2]], [3, 3])
+
+    def runAlgorithm(algorithm):
+        print()
+        print('----------------------------------------------------------------------------------------------------')
+        print('-----------------------',algorithm,'-----------------------')
+        print('----------------------------------------------------------------------------------------------------')
+        world=chooseWorld()
+        algorithm+="(world)"
+        print(algorithm)
+        exec(algorithm)
+        print()
+        input("Press Enter to continue...")
+        return
+
+
 
 
     while(True):
-        print('--------------------------------------------------------------------------------------------------------')
-        print('--------------------------Program for implementing different types of searches--------------------------')
-        print('---------------------------------------------Adam Kantorik----------------------------------------------')
-        print('-------------------------------------------ak2g15@soton.ac.uk-------------------------------------------')
-        print('--------------------------------------------------------------------------------------------------------')
+        print('----------------------------------------------------------------------------------------------------')
+        print('------------------------Program for implementing different types of searches------------------------')
+        print('-------------------------------------------Adam Kantorik--------------------------------------------')
+        print('-----------------------------------------ak2g15@soton.ac.uk-----------------------------------------')
+        print('----------------------------------------------------------------------------------------------------')
         print('')
         print('Menu:')
         print('         1 - Bread first search')
@@ -210,8 +235,29 @@ def textMenu():
         print('         C - Clear screen')
         print('         Q - Quit program')
 
-        chooseWorld()
-        break
+        choice=validInput(["1","2","3","4","5","c","C",'q',"Q"])
+
+        if(choice =="1"):
+            runAlgorithm("breadthFirstSearch")
+        elif(choice =="2"):
+            runAlgorithm("depthFirstSearch")
+        elif(choice =="3"):
+            runAlgorithm("iterativeDeepeningSearch")
+        elif (choice =="4"):
+            runAlgorithm("AstarSearch")
+        elif (choice =="5"):
+            print('----------------------------------------------------------------------------------------------------')
+            print('"Evolutionary" search')
+            print('----------------------------------------------------------------------------------------------------')
+            world = chooseWorld()
+        elif (choice == "c" or choice == "C"):
+            print('You choosed Clear screen')
+            os.system('cls' if os.name == 'nt' else 'clear')
+        elif (choice == "q" or choice == "Q"):
+            print('Finishing')
+            return
+
+
 
 
 
@@ -410,10 +456,9 @@ def evolutionarySearch(inWorld, nue, sop, depthFac):
 # world = World(3,4,[[0,0],[2,0],[2,1]],[0, 2])
 # world = World(4,4,[[3,0],[3,1],[3,2]],[3, 3])
 # print(world.estimateFunction())
-breadthFirstSearch(world)
+# breadthFirstSearch(world)
 # evolutionarySearch(world, 30, 20, 6)
-test=textMenu()
-
+textMenu()
 
 
 
